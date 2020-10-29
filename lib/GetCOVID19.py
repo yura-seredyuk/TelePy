@@ -12,6 +12,7 @@ class GetCOVID19:
             user=USERNAME,
             password=PASSWORD
         )
+        # self.__template = "{0:8}|{1:10}|{2:15}|{3:7}|{4:10}"
         self.__cursor = self.__db.cursor()
         self.__cursor.execute("CREATE DATABASE IF NOT EXISTS telepy")
         self.__cursor.execute("USE telepy")
@@ -64,24 +65,47 @@ class GetCOVID19:
     def sort_by_total_confirmed(self):
         self.__cursor.execute(
             "SELECT Country, TotalConfirmed FROM Countries ORDER BY TotalConfirmed")
+        # for item in self.__cursor.fetchall():
+        #     print(' '.join(map(str, item)))
+        print("Information sort by total confirmed".center(50, '_'))
+        template = "|{0:_^31}|{1:_^16}|"
+        print(template.format(*[d[0]
+                                for d in self.__cursor.description]))
+        template = "|{0:_<31}|{1:_^16}|"
         for item in self.__cursor.fetchall():
-            print(' '.join(map(str, item)))
+            print(template.format(*item))
 
     def sort_by_new_confirmed(self):
         self.__cursor.execute(
             "SELECT Country, NewConfirmed FROM Countries ORDER BY NewConfirmed")
+        # for item in self.__cursor.fetchall():
+        #     print(' '.join(map(str, item)))
+        print("Information sort by new confirmed".center(48, '_'))
+        template = "|{0:_^31}|{1:_^14}|"
+        print(template.format(*[d[0]
+                                for d in self.__cursor.description]))
+        template = "|{0:_<31}|{1:_^14}|"
         for item in self.__cursor.fetchall():
-            print(' '.join(map(str, item)))
+            print(template.format(*item))
 
     def sort_by_country_name(self):
         self.__cursor.execute(
             "SELECT Country, CountryCode, Slug, NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered, Date FROM Countries ORDER BY Country")
+        print("Information sort by country name".center(179, '_'))
+        template = "|{0:_^31}|{1:_^11}|{2:_^32}|{3:_^12}|{4:_^14}|{5:_^9}|{6:_^11}|{7:_^12}|{8:_^14}|{9:_^22}|"
+        print(template.format(*[d[0]
+                                for d in self.__cursor.description]))
+        template = "|{0:_<31}|{1:_^11}|{2:_<32}|{3:_^12}|{4:_^14}|{5:_^9}|{6:_^11}|{7:_^12}|{8:_^14}|{9:_^22}|"
         for item in self.__cursor.fetchall():
-            print(' '.join(map(str, item)))
+            print(template.format(*item))
 
     def show_global_info(self):
         self.__cursor.execute(
             "SELECT NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered FROM Global")
-        print("\tGlobal information")
-        [print("  ", d[0], ": ", i, sep="") for d, i in zip(
-            self.__cursor.description, self.__cursor.fetchone())]
+        print("Global information".center(93, '_'))
+        # [print("  ", d[0], ": ", i, sep="") for d, i in zip(
+        #     self.__cursor.description, self.__cursor.fetchone())]
+        template = "|{0:^16}|{1:^16}|{2:^11}|{3:^13}|{4:^14}|{5:^16}|"
+        print(template.format(*[d[0]
+                                for d in self.__cursor.description]))
+        print(template.format(*self.__cursor.fetchone()))
