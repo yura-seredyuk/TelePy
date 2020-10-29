@@ -108,4 +108,5 @@ class GetCOVID19:
         template = "|{0:^16}|{1:^16}|{2:^11}|{3:^13}|{4:^14}|{5:^16}|"
         print(template.format(*[d[0]
                                 for d in self.__cursor.description]))
+        template = "|{0:_^16}|{1:_^16}|{2:_^11}|{3:_^13}|{4:_^14}|{5:_^16}|"
         print(template.format(*self.__cursor.fetchone()))
